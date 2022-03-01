@@ -1,0 +1,29 @@
+*{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+.navbar{
+  background: salmon;
+  display: flex;
+  flex-direction: row;
+  height: 200px;
+  width: 360px;
+  flex-wrap: wrap;
+  padding: 10px;
+  
+}
+.kotak{
+  height: 80px;
+  background-color: cyan;
+  flex: 1;
+  line-height: 80px;
+}
+.kotak1{
+  height: 80px;
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  background-color: magenta;
+}
