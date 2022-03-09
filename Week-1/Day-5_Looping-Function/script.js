@@ -20,6 +20,7 @@
 // }
 
 // do while loop
+
 // do {
 //   console.log('lakukan ini dulu');
 
