@@ -7,7 +7,6 @@ import mobil from '../assets/images/icon.png'
 function Item({ item }) {
   return (
     <View style={styles.listItem}>
-      
       <Image source={{uri:item.photo}}  style={{width:60, height:60,borderRadius:30}} />
       <View style={{alignItems:"flex-start",flex:1, marginLeft:15}}>
         <Poppins type='Regular' size={14}>{item.name}</Poppins>

@@ -10,10 +10,12 @@ const Tab = createBottomTabNavigator();
 
 export default function MyTabs() {
   return (
-    <Tab.Navigator screenOptions={{headerShown:false}}>
-      <Tab.Screen name="Home" component={Home} options={{ tabBarIcon:() => <Feather name="home" color='blue' size={20}/> }} />
-      <Tab.Screen name="List" component={List} options={{ tabBarIcon:() => <Feather name="list" color='blue' size={20} /> }} />
-      <Tab.Screen name="Profile" component={Profile} options={{ tabBarIcon:() => <MaterialCommunityIcons name="account-outline" color='blue' size={20}/> }} />
+    <Tab.Navigator screenOptions={{headerShown:false, tabBarActiveTintColor:'blue', tabBarStyle:{ paddingTop:10, height:70, paddingBottom:10 },tabBarInactiveTintColor:'grey', tabBarLabelStyle:{
+      fontSize:15,}
+    }}>
+      <Tab.Screen name="Home" component={Home} options={{ tabBarLabel: 'Home', tabBarIcon: ({ color }) => ( <Feather name="home" color={color} size={25} /> ), }} />
+      <Tab.Screen name="List Mobil" component={List} options={{ tabBarLabel: 'List Mobil', tabBarIcon: ({ color }) => ( <Feather name="list" color={color} size={25} /> ), }} />
+      <Tab.Screen name="Profile" component={Profile} options={{ tabBarLabel: 'Profile', tabBarIcon: ({ color }) => ( <Feather name="user" color={color} size={25} /> ), }} />
     </Tab.Navigator>
   );
 }
