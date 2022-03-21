@@ -1,7 +1,4 @@
-import React, {useState, useEffect} from 'react';
-import { Text, View,StyleSheet, TouchableOpacity } from 'react-native'; 
-import Photo from './src/components/Banner';
-import Render from './src/components/Renderscreen';
+import React, { useEffect} from 'react';
 import MainRoute from './src/routes/MainRoute';
 import {NavigationContainer} from '@react-navigation/native';
 import SplashScreen from 'react-native-splash-screen';
