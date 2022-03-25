@@ -1,12 +1,19 @@
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, TextInput, ActivityIndicator, TouchableOpacity, Image } from 'react-native'
 import React, {useState} from 'react'
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 import axios from 'axios';
 import {BaseUrlApi} from '../../helpers/Api';
+import Monserrat from '../../components/Monserrat';
+import logo from '../../assets/images/Reactflix.png';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Loading from '../../components/Loading';
+
 
 export default function Login({navigation}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [hidePassword, setHidePassword] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const postLogin = async () => {
     // Cek inputan kosong
@@ -15,10 +22,11 @@ export default function Login({navigation}) {
     } 
     
     else {
+      setLoading(true);
       try {
         const body = {
-          email: email,
-          password: password,
+          email: email,//eve.holt@reqres.in
+          password: password, //cityslicka
         };
   
         const res = await axios.post(`${BaseUrlApi}api/login`, body, {
@@ -29,18 +37,24 @@ export default function Login({navigation}) {
         if(res.status <= 201){
           navigation.navigate("Home")
         } else {
-          return alert("Error")
+          return alert("Email atau Password salah");
         }
       } catch (error) {
         console.log(error);
       }
+      finally {
+        setLoading(false);
+      }
     }
   }
+  
 
   return (
+    // loading ? <View style={styles.progressBar}><Loading /></View>
+    // :
     <View style={styles.container}>
-        {/* <Image style={{marginBottom:50, width:70, height:70}} source={require('./asset/icon-app.png')} /> */}
-       
+        <Image style={{marginBottom:50, width:300, height:70}} resizeMode='contain' source={logo} />
+
           <TextInput 
             style={styles.textInput}
             placeholder='Email'
@@ -48,21 +62,39 @@ export default function Login({navigation}) {
             placeholderTextColor='#ffffff'
             autoCapitalize="none"
           />
+          <View style={{ position:'relative' }}>
           <TextInput 
-            secureTextEntry
+            secureTextEntry={hidePassword}
             onChangeText={(text) => setPassword(text)}
             style={[styles.textInput]}
             placeholder='Password'
             placeholderTextColor='#ffffff'
           />
+           <TouchableOpacity style={styles.hide} onPress={() => setHidePassword(!hidePassword)}>
+            { hidePassword ? 
+            <Ionicons
+              name="eye"
+              color="#fff"
+              size={25}
+              />
+              :
+              <Ionicons
+              name="eye-off"
+              color="#fff"
+              size={25}
+              />
+              }   
+            </TouchableOpacity>
+          </View>
+          
         
         <TouchableOpacity onPress={postLogin} style={styles.buttonStyle}>
-          <Text style={styles.textSignup}>Login</Text>
+          {loading ? <ActivityIndicator/> : <Text style={styles.textSignup}>Login</Text>}
         </TouchableOpacity>
         <TouchableOpacity
           style={{marginVertical: 10}}
           onPress={() => navigation.navigate('Register')}>
-          <Text style={styles.instructions}>Don’t have account? Register</Text>
+          <Monserrat type='Bold' color='#fff' size={12}>Don’t have account? Register</Monserrat>
         </TouchableOpacity>
         
       </View>
@@ -74,36 +106,46 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#1ABC9C',
-    flexDirection: 'column'
+    backgroundColor: '#000',
+    flexDirection: 'column',
   },
   textInput:{
     height: 40,
     borderColor: '#ffffff',
-    borderWidth: 1,
-    color:'#ffffff',
-    paddingLeft:10,
-    paddingRight:10,
+    backgroundColor: '#1A1A1A',
+    borderWidth: 2,
+    color:'#fff',
+    paddingHorizontal:20,
+    marginVertical: 10,
     marginBottom:10,
-    width:moderateScale(350),
+    borderRadius:10,
+    width:moderateScale(300),
   },
   buttonStyle:{
-    backgroundColor:'#ffffff',
+    backgroundColor:'#FF0000',
     paddingLeft:10,
     paddingRight:10,
     marginTop:10,
-    width:350
+    width:moderateScale(300),
+    borderRadius:10,
   },
   textSignup: {
     fontSize: 16,
     textAlign: 'center',
     margin: 10,
-    color:'#1ABC9C'
+    color:'#fff'
   },
-  instructions: {
-    textAlign: 'center',
-    color: '#ffffff',
-    marginBottom: 5,
-    marginTop:10
+  hide:{
+    position: 'absolute',
+    right:10,
+    top:16
+    
   },
+  progressBar: {
+		backgroundColor: '#0a0a0a',
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+  
 })

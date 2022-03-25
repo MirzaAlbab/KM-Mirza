@@ -48,10 +48,10 @@ export default function Register({navigation}) {
     else {
       // jika tidak ada yang kosong maka lanjut cek regex
       if(!email.match(regexEmail)){
-        alert('Tidak memenuhi ketentuan Email')
+        alert('Email tidak valid')
       }
       else if (!password.match(regexPassword)){
-        alert('Tidak memenuhi ketentuan password')
+        alert('Password tidak valid')
       } 
       else{
         try {

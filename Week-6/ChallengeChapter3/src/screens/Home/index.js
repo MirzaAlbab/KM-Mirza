@@ -1,13 +1,18 @@
-import { View, Text, TouchableOpacity, FlatList,Image, StyleSheet } from 'react-native'
+import { View, Text, TouchableOpacity, FlatList,Image, StyleSheet, SafeAreaView } from 'react-native'
 import React from 'react'
 import axios from 'axios'
 import { AllMovie } from '../../helpers/Api'
 import { useState, useEffect } from 'react'
 import { moderateScale } from 'react-native-size-matters'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import Monserrat from '../../components/Monserrat'
+import FastImage from 'react-native-fast-image'
+import Loading from '../../components/Loading'
 
 export default function Home({ navigation }) {
 
   const [listMovie, setListMovie] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(()=>{
     getListMovie();
@@ -15,11 +20,15 @@ export default function Home({ navigation }) {
 
   const getListMovie = async () => {
     try {
+      setLoading(true);
       const results = await axios.get(`${AllMovie}`);
       console.log(results)
       setListMovie(results.data.results);
     } catch (error) {
       console.log(error)
+    }
+    finally {
+      setLoading(false);
     }
   };
 
@@ -33,24 +42,25 @@ export default function Home({ navigation }) {
           alignItems: 'center',
           padding: 10,
           marginHorizontal: 10,
+          marginVertical:5,
+          backgroundColor: '#1a1a1a',
+          borderRadius: 10,
         }}>
-        <Image
+        <FastImage
           source={{uri: `${item.poster_path}`}}
           style={{height: moderateScale(150), width:moderateScale(150), borderRadius: 5, flex: 1}}
         />
-        <View style={{marginStart: 10, flex: 1}}>
-          <Text
-            style={styles.titlemov}>
-            {item.title}
-          </Text>
-          <Text
-            style={styles.detail}>
+        <View style={{marginStart: 15, flex: 1}}>
+          <Monserrat type='Bold' size={16} color='white'>{item.title}</Monserrat>
+          
+          <Monserrat
+            color='white' size={12} marginTop={10}>
             Released : {item.release_date}
-          </Text>
-          <Text
-            style={styles.detail}>
-            Rating : {item.vote_average}
-          </Text>
+          </Monserrat>
+          <Monserrat
+            color='white' size={12} marginTop={10}>
+            <FontAwesome name='star' color='yellow' size={15}/> {item.vote_average}
+          </Monserrat>
           
           <TouchableOpacity onPress={() => navigation.navigate('DetailMovie',{id: `${item.id}`})} style={styles.buttonStyle}>
           <Text style={styles.textShow}>Show More</Text>
@@ -68,38 +78,39 @@ export default function Home({ navigation }) {
           flexDirection: 'row',
           alignItems: 'center',
           padding: 10,
-          marginVertical: 10,
+          marginVertical: 15,
+          marginLeft:5,
           marginHorizontal: 5,
         }}>
-        <Image
-          source={{uri: `${item.poster_path}`}}
-          style={{height:moderateScale(150), width:moderateScale(100), borderRadius: 20, flex: 1}}
-        />
+        <TouchableOpacity onPress={() => navigation.navigate('DetailMovie',{id: `${item.id}`})} >
+          <FastImage style={{ width:moderateScale(100), height:moderateScale(100), borderRadius: 10 }} source={{ uri: `${item.poster_path}` }}/>
+        </TouchableOpacity>
+        
+        
         
       </View>
     );
   };
+  
 
   return (
-    <View style={{flex: 1}}>
-      <Text style={styles.title}>
-        Recommended Movies
-      </Text>
+    loading ? <View style={styles.progressBar}><Loading /></View>
+    :
+    <SafeAreaView style={{flex: 1, backgroundColor:'black', paddingTop:10}}>
+      <Monserrat type='Bold' color='white' fontSize={18} paddingHorizontal={15} marginVertical={10}>Recommended Movies</Monserrat>
       <FlatList
         data={listMovie}
         keyExtractor={(item, index) => index}
         renderItem={PosterMovie}
         horizontal={true}
       />
-      <Text style={styles.title}>
-        Latest Upload
-      </Text>
+      <Monserrat type='Bold' color='white' fontSize={18} paddingHorizontal={15} marginVertical={10}>Latest Upload</Monserrat>
       <FlatList
         data={listMovie}
         keyExtractor={(item, index) => index}
         renderItem={CardMovie}
       />
-    </View>
+    </SafeAreaView>
   )
 }
 
@@ -109,10 +120,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     margin: moderateScale(10),
     color:'#fff',
-    fontWeight: 'bold'
+    fontFamily: 'Monserrat-Bold',
   },
   buttonStyle:{
-    backgroundColor:'#649DFF',
+    backgroundColor:'#FF1A28',
     paddingLeft:moderateScale(10),
     paddingRight:moderateScale(10),
     marginTop:moderateScale(10),
@@ -124,16 +135,17 @@ const styles = StyleSheet.create({
     fontWeight: 'bold', 
     marginVertical: moderateScale(10),
     marginLeft: moderateScale(15),
-    color:'black'
+    color:'white'
   },
   titlemov:{
     fontSize: moderateScale(20), 
     fontWeight: 'bold', 
     color:'black'
   },
-  detail:{
-    fontSize: moderateScale(12),
-    marginTop: moderateScale(10),
-    color:'black'
-  }
+  progressBar: {
+		backgroundColor: '#0a0a0a',
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
 })

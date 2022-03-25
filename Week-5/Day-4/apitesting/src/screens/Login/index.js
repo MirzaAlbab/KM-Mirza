@@ -1,4 +1,4 @@
-import {Text, View, TouchableOpacity, ImageBackground} from 'react-native';
+import {Text, View, TouchableOpacity, ImageBackground, ActivityIndicator} from 'react-native';
 import React, {useState} from 'react';
 import {Input, Button} from 'react-native-elements';
 import axios from 'axios';
@@ -7,9 +7,11 @@ import {BaseUrlApi} from '../../helpers/Api';
 export default function Login({navigation}) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const postLogin = async () => {
     try {
+      setLoading(true)
       const body = {
         username: username,
         password: password,
@@ -26,8 +28,19 @@ export default function Login({navigation}) {
     } catch (error) {
       console.log(error);
     }
+    finally{
+      setLoading(false)
+    }
   };
 
+  if (loading) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator/>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
 
   return (
     <View
