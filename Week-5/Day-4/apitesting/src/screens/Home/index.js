@@ -3,10 +3,14 @@ import React from 'react'
 import axios from 'axios'
 import { ACCESS_TOKEN, BaseUrl, ImageUrl } from '../../helpers/Api'
 import { useState, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { Setlistmovie } from './redux/action'
 
 export default function Home() {
 
-  const [listMovie, setListMovie] = useState([]);
+  // const [listMovie, setListMovie] = useState([]);
+  const dispatch = useDispatch();
+  const {listMovie} = useSelector(state => state.movie);
 
   useEffect(()=>{
     getListMovie('now_playing');
@@ -17,10 +21,13 @@ export default function Home() {
       const results = await axios.get(`${BaseUrl}movie/${endpoint}`, {
         headers : {Authorization : `Bearer ${ACCESS_TOKEN}`},
       });
-      console.log(results)
-      setListMovie(results.data.results);
+      // console.log(results)
+      dispatch(Setlistmovie(results.data.results));
     } catch (error) {
       console.log(error)
+    }
+    finally{
+      console.log('ini list movie',listMovie)
     }
   };
 

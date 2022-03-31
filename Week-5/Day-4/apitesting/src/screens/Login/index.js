@@ -3,15 +3,22 @@ import React, {useState} from 'react';
 import {Input, Button} from 'react-native-elements';
 import axios from 'axios';
 import {BaseUrlApi} from '../../helpers/Api';
+import {useSelector, useDispatch} from 'react-redux';
+import {setUsername, setPassword, setLoading} from './redux/action';
 
 export default function Login({navigation}) {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
+  // const [username, setUsername] = useState('');
+  // const [password, setPassword] = useState('');
+  // const [loading, setLoading] = useState(false);
+
+  const {username, password, loading} = useSelector(state => state.login);
+  const dispatch = useDispatch();
+
 
   const postLogin = async () => {
     try {
-      setLoading(true)
+      dispatch(setLoading(true))
+      
       const body = {
         username: username,
         password: password,
@@ -29,7 +36,8 @@ export default function Login({navigation}) {
       console.log(error);
     }
     finally{
-      setLoading(false)
+      dispatch(setLoading(false))
+      console.log(username, password, loading)
     }
   };
 
@@ -74,13 +82,15 @@ export default function Login({navigation}) {
               style={{height: 50, color: 'white'}}
               placeholder="username"
               placeholderTextColor={'white'}
-              onChangeText={text => setUsername(text)}
+              onChangeText={text => dispatch(setUsername(text))}
+              // onChangeText={text => setUsername(text)}
             />
             <Input
               style={{height: 50, color: 'white'}}
               placeholder="password"
               placeholderTextColor={'white'}
-              onChangeText={text => setPassword(text)}
+              onChangeText={text => dispatch(setPassword(text))}
+              // onChangeText={text => setPassword(text)}
               secureTextEntry={true}
             />
           </View>

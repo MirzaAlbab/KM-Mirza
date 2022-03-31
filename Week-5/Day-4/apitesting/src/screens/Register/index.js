@@ -3,21 +3,25 @@ import React, {useState} from 'react';
 import {Input, Button} from 'react-native-elements';
 import axios from 'axios';
 import {BaseUrlApi} from '../../helpers/Api';
+import {useSelector, useDispatch} from 'react-redux';
+import { setRegister } from './redux/action';
 
 
 export default function Register({navigation}) {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [email, setEmail] = useState('');
-  const [firstname, setFirstname] = useState('');
-  const [lastname, setLastname] = useState('');
-  const [city, setCity] = useState('');
-  const [street, setStreet] = useState('');
-  const [number, setNumber] = useState('');
-  const [zipcode, setZipcode] = useState('');
-  const [lat, setLat] = useState('');
-  const [long, setLong] = useState('');
-  const [phone, setPhone] = useState('');
+  // const [username, setUsername] = useState('');
+  // const [password, setPassword] = useState('');
+  // const [email, setEmail] = useState('');
+  // const [firstname, setFirstname] = useState('');
+  // const [lastname, setLastname] = useState('');
+  // const [city, setCity] = useState('');
+  // const [street, setStreet] = useState('');
+  // const [number, setNumber] = useState('');
+  // const [zipcode, setZipcode] = useState('');
+  // const [lat, setLat] = useState('');
+  // const [long, setLong] = useState('');
+  // const [phone, setPhone] = useState('');
+  const data = useSelector(state => state.register);
+  console.log(data);
 
   const regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
   const regexPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
@@ -101,16 +105,18 @@ export default function Register({navigation}) {
       <Input placeholder="Email" 
         style={{ color:'white' }}
         placeholderTextColor={'white'} 
-        onChangeText={text => setEmail(text)} />
+        // onChangeText={text => setEmail(text)} 
+        />
       <Input placeholder="Username"
         style={{ color:'white' }}
         placeholderTextColor={'white'}
-        onChangeText={text => setUsername(text)} />
+        // onChangeText={text => setUsername(text)} 
+        />
       <Input
         placeholder="Password"
         style={{ color:'white' }}
         placeholderTextColor={'white'}
-        onChangeText={text => setPassword(text)}
+        // onChangeText={text => setPassword(text)}
         secureTextEntry={true}
       />
 
@@ -118,46 +124,53 @@ export default function Register({navigation}) {
         placeholder="First Name"
         style={{ color:'white' }}
         placeholderTextColor={'white'}
-        onChangeText={text => setFirstname(text)}
+        // onChangeText={text => setFirstname(text)}
       />
       <Input placeholder="Last Name" 
         style={{ color:'white' }}
         placeholderTextColor={'white'} 
-        onChangeText={text => setLastname(text)} />
+        // onChangeText={text => setLastname(text)} 
+        />
       <Input placeholder="City" 
         style={{ color:'white' }}
         placeholderTextColor={'white'} 
-        onChangeText={text => setCity(text)} />
+        // onChangeText={text => setCity(text)} 
+        />
       <Input placeholder="Street" 
         style={{ color:'white' }}
         placeholderTextColor={'white'} 
-        onChangeText={text => setStreet(text)} />
+        // onChangeText={text => setStreet(text)} 
+        />
       <Input placeholder="Number Address"
         style={{ color:'white' }} 
         keyboardType="phone-pad" 
         placeholderTextColor={'white'}
-        onChangeText={text => setNumber(text)} />
+        // onChangeText={text => setNumber(text)} 
+        />
       <Input placeholder="Zip Code" 
         style={{ color:'white' }}
         keyboardType="phone-pad"
         placeholderTextColor={'white'}
-        onChangeText={text => setZipcode(text)} />
+        // onChangeText={text => setZipcode(text)} 
+        />
       <Input placeholder="Latitude" 
         style={{ color:'white' }}
         keyboardType="phone-pad" 
         placeholderTextColor={'white'}
-        onChangeText={text => setLat(text)} />
+        // onChangeText={text => setLat(text)} 
+        />
       <Input placeholder="Longtitude" 
         style={{ color:'white' }}
         keyboardType="phone-pad" 
         placeholderTextColor={'white'}
-        onChangeText={text => setLong(text)} />
+        // onChangeText={text => setLong(text)} 
+        />
       <Input
         placeholder="Number Phone"
         style={{ color:'white' }}
         keyboardType="phone-pad"
         placeholderTextColor={'white'}
-        onChangeText={text => setPhone(text)}
+        // onChangeText={text => setPhone(text)}
       />
       <View
         style={{
