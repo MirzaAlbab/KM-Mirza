@@ -13,13 +13,3 @@ export default function BottomTab() {
     </Tab.Navigator>
   )
 }
-
-
-
-
-
-
-
-function MyTabs() {
-  
-}

@@ -1,10 +1,11 @@
-import {Text, View, StyleSheet, ScrollView} from 'react-native';
+import {Text, View, StyleSheet, ScrollView, ActivityIndicator} from 'react-native';
 import React, {useState} from 'react';
 import {Input, Button} from 'react-native-elements';
 import axios from 'axios';
 import {BaseUrlApi} from '../../helpers/Api';
 import {useSelector, useDispatch} from 'react-redux';
-import { setRegister } from './redux/action';
+import { setUsername, setPassword, setEmail } from './redux/action';
+import {setLoading} from '../Login/redux/action';
 
 
 export default function Register({navigation}) {
@@ -20,8 +21,9 @@ export default function Register({navigation}) {
   // const [lat, setLat] = useState('');
   // const [long, setLong] = useState('');
   // const [phone, setPhone] = useState('');
-  const data = useSelector(state => state.register);
-  console.log(data);
+  const {username,password,email} = useSelector(state => state.register);
+  const {loading} = useSelector(state => state.login);
+  const dispatch = useDispatch();
 
   const regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
   const regexPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
@@ -37,18 +39,18 @@ export default function Register({navigation}) {
     else if(password.length < 1 ){
       alert('Password tidak boleh kosong');
     } 
-    else if(firstname.length < 1){
-      alert('Firstname tidak boleh kosong');
-    }
-    else if(lastname.length < 1 ){
-      alert('Lastname tidak boleh kosong');
-    } 
-    else if(city.length < 1 || street.length < 1 || number.length < 1 || zipcode.length < 1 || lat.length < 1 || long.length < 1){
-      alert('Address tidak boleh kosong');
-    }
-    else if(phone.length < 1 ){
-      alert('Number Phone tidak boleh kosong');
-    } 
+    // else if(firstname.length < 1){
+    //   alert('Firstname tidak boleh kosong');
+    // }
+    // else if(lastname.length < 1 ){
+    //   alert('Lastname tidak boleh kosong');
+    // } 
+    // else if(city.length < 1 || street.length < 1 || number.length < 1 || zipcode.length < 1 || lat.length < 1 || long.length < 1){
+    //   alert('Address tidak boleh kosong');
+    // }
+    // else if(phone.length < 1 ){
+    //   alert('Number Phone tidak boleh kosong');
+    // } 
     else {
       // jika tidak ada yang kosong maka lanjut cek regex
       if(!email.match(regexEmail)){
@@ -59,25 +61,26 @@ export default function Register({navigation}) {
       } 
       else{
         try {
+          dispatch(setLoading(true));
           const body = {
             email: email,
             username: username,
             password: password,
             name:{
-                firstname: firstname,
-                lastname: lastname
+              firstname:'John',
+              lastname:'Doe'
             },
             address:{
-                city: city,
-                street: street,
-                number: number,
-                zipcode: zipcode,
-                geolocation:{
-                    lat: lat,
-                    long: long
-                }
-            },
-            phone: phone
+              city:'kilcoole',
+              street:'7835 new road',
+              number:3,
+              zipcode:'12926-3874',
+              geolocation:{
+                  lat:'-37.3159',
+                  long:'81.1496'
+              }
+          },
+          phone:'1-570-236-7033'
           };
     
           const res = await axios.post(`${BaseUrlApi}/users`, body, {
@@ -93,11 +96,23 @@ export default function Register({navigation}) {
         } catch (error) {
           console.log(error);
         }
+        finally{
+          dispatch(setLoading(false));
+          console.log(username, password, email)
+        }
       }
     }
     
     
   };
+  if (loading) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator/>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
 
   return (
     <ScrollView style={styles.containner}>
@@ -105,22 +120,22 @@ export default function Register({navigation}) {
       <Input placeholder="Email" 
         style={{ color:'white' }}
         placeholderTextColor={'white'} 
-        // onChangeText={text => setEmail(text)} 
+        onChangeText={text => dispatch(setEmail(text))} 
         />
       <Input placeholder="Username"
         style={{ color:'white' }}
         placeholderTextColor={'white'}
-        // onChangeText={text => setUsername(text)} 
+        onChangeText={text => dispatch(setUsername(text))} 
         />
       <Input
         placeholder="Password"
         style={{ color:'white' }}
         placeholderTextColor={'white'}
-        // onChangeText={text => setPassword(text)}
+        onChangeText={text => dispatch(setPassword(text))}
         secureTextEntry={true}
       />
 
-      <Input
+      {/* <Input
         placeholder="First Name"
         style={{ color:'white' }}
         placeholderTextColor={'white'}
@@ -171,7 +186,7 @@ export default function Register({navigation}) {
         keyboardType="phone-pad"
         placeholderTextColor={'white'}
         // onChangeText={text => setPhone(text)}
-      />
+      /> */}
       <View
         style={{
           width: '100%',
@@ -181,6 +196,7 @@ export default function Register({navigation}) {
           marginTop: 20,
           marginBottom: 50,
         }}>
+        
         <Button style={{color:'black'}} onPress={postRegister} title={'Sign Up'} />
       </View>
     </ScrollView>

@@ -8,9 +8,9 @@ export default function Profile() {
   const {name, age} = useSelector(state => state.profile);
   return (
     <View>
+      <Text>Profile</Text>
       <Text>{name}</Text>
       <Text>{age}</Text>
-      <Text>Profile</Text>
     </View>
   )
 }

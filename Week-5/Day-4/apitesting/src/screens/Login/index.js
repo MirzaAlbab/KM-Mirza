@@ -5,6 +5,7 @@ import axios from 'axios';
 import {BaseUrlApi} from '../../helpers/Api';
 import {useSelector, useDispatch} from 'react-redux';
 import {setUsername, setPassword, setLoading} from './redux/action';
+import { setToken } from '../../store/globalaction';
 
 export default function Login({navigation}) {
   // const [username, setUsername] = useState('');
@@ -14,21 +15,22 @@ export default function Login({navigation}) {
   const {username, password, loading} = useSelector(state => state.login);
   const dispatch = useDispatch();
 
-
   const postLogin = async () => {
     try {
       dispatch(setLoading(true))
       
       const body = {
-        username: username,
-        password: password,
+        username: username, //mor_2314
+        password: password, //83r5^_
       };
 
       const res = await axios.post(`${BaseUrlApi}/auth/login`, body, {
         validateStatus: status => status < 501});
-      console.log(res.status);
+      console.log(res);
+
       if(res.status <= 201){
-        navigation.navigate("Main")
+        dispatch(setToken(res.data.token));
+        navigation.navigate("Home")
       } else {
         return alert("Username atau password Salah")
       }
@@ -41,14 +43,7 @@ export default function Login({navigation}) {
     }
   };
 
-  if (loading) {
-    return (
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <ActivityIndicator/>
-        <Text>Loading...</Text>
-      </View>
-    );
-  }
+  
 
   return (
     <View
@@ -114,8 +109,8 @@ export default function Login({navigation}) {
                 Forget Password?
               </Text>
             </TouchableOpacity>
-
-            <Button onPress={postLogin} title={'Sign in'} />
+            {loading ? <ActivityIndicator /> : <Button onPress={postLogin} title={'Sign in'} /> }
+            
             <TouchableOpacity
               style={{marginVertical: 10}}
               onPress={() => navigation.navigate('Register')}>
