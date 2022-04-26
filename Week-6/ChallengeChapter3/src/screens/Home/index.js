@@ -83,11 +83,8 @@ export default function Home({ navigation }) {
           marginHorizontal: 5,
         }}>
         <TouchableOpacity onPress={() => navigation.navigate('DetailMovie',{id: `${item.id}`})} >
-          <FastImage style={{ width:moderateScale(100), height:moderateScale(100), borderRadius: 10 }} source={{ uri: `${item.poster_path}` }}/>
+          <Image style={{ width:moderateScale(100), height:moderateScale(100), borderRadius: 10 }} source={{ uri: `${item.poster_path}` }}/>
         </TouchableOpacity>
-        
-        
-        
       </View>
     );
   };
