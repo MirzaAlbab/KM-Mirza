@@ -1,147 +1,60 @@
-import React, {useState} from 'react';
-import {
-  SafeAreaView,
-  Text,
-  View,
-  Linking,
-  TouchableHighlight,
-  PermissionsAndroid,
-  Platform,
-  StyleSheet,
-} from 'react-native';
+import {StyleSheet, Text, View, TouchableHighlight, Alert} from 'react-native';
+import React from 'react';
+import TouchID from 'react-native-touch-id';
 
-import {CameraScreen} from 'react-native-camera-kit';
-
-const App = () => {
-  const [qrvalue, setQrvalue] = useState('');
-  const [openScanner, setOpenScanner] = useState(false);
-
-  const onOpenlink = () => {
-    // If scanned then function to open URL in Browser
-    Linking.openURL(qrvalue);
+export default function App() {
+  const optionalConfigObject = {
+    title: 'Authentication Required', // Android
+    imageColor: '#e00606', // Android
+    imageErrorColor: '#ff0000', // Android
+    sensorDescription: 'Touch sensor', // Android
+    sensorErrorDescription: 'Failed', // Android
+    cancelText: 'Cancel', // Android
+    fallbackLabel: 'Show Passcode', // iOS (if empty, then label is hidden)
+    unifiedErrors: false, // use unified error messages (default false)
+    passcodeFallback: false, // iOS - allows the device to fall back to using the passcode, if faceid/touch is not available. this does not mean that if touchid/faceid fails the first few times it will revert to passcode, rather that if the former are not enrolled, then it will use the passcode.
   };
-
-  const onBarcodeScan = qrvalue => {
-    // Called after te successful scanning of QRCode/Barcode
-    setQrvalue(qrvalue);
-    setOpenScanner(false);
-  };
-
-  const onOpenScanner = () => {
-    // To Start Scanning
-    if (Platform.OS === 'android') {
-      async function requestCameraPermission() {
-        try {
-          const granted = await PermissionsAndroid.request(
-            PermissionsAndroid.PERMISSIONS.CAMERA,
-            {
-              title: 'Camera Permission',
-              message: 'App needs permission for camera access',
-            },
-          );
-          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-            // If CAMERA Permission is granted
-            setQrvalue('');
-            setOpenScanner(true);
-          } else {
-            alert('CAMERA permission denied');
-          }
-        } catch (err) {
-          alert('Camera permission err', err);
-          console.warn(err);
+  const testHandler = () => {
+    TouchID.isSupported(optionalConfigObject)
+      .then(biometryType => {
+        // Success code
+        if (biometryType === 'FaceID') {
+          Alert.alert('FaceID is supported.');
+        } else if (biometryType === 'TouchID') {
+          Alert.alert('TouchID is supported.');
+        } else if (biometryType === true) {
+          Alert.alert('TouchID is supported.');
         }
-      }
-      // Calling the camera permission function
-      requestCameraPermission();
-    } else {
-      setQrvalue('');
-      setOpenScanner(true);
-    }
+      })
+      .catch(error => {
+        // Failure code
+        console.log(error);
+      });
+  };
+
+  const pressHandler = () => {
+    TouchID.authenticate(
+      'to demo this react-native component',
+      optionalConfigObject,
+    )
+      .then(success => {
+        Alert.alert('Authenticated Successfully');
+      })
+      .catch(error => {
+        Alert.alert('Authentication Failed');
+      });
   };
 
   return (
-    <SafeAreaView style={{flex: 1}}>
-      {openScanner ? (
-        <View style={{flex: 1}}>
-          <CameraScreen
-            showFrame={false}
-            // Show/hide scan frame
-            scanBarcode={true}
-            // Can restrict for the QR Code only
-            laserColor={'blue'}
-            // Color can be of your choice
-            frameColor={'yellow'}
-            // If frame is visible then frame color
-            colorForScannerFrame={'black'}
-            // Scanner Frame color
-            onReadCode={event =>
-              onBarcodeScan(event.nativeEvent.codeStringValue)
-            }
-          />
-        </View>
-      ) : (
-        <View style={styles.container}>
-          <Text style={styles.titleText}>
-            Barcode and QR Code Scanner using Camera in React Native
-          </Text>
-          <Text style={styles.textStyle}>
-            {qrvalue ? 'Scanned Result: ' + qrvalue : ''}
-          </Text>
-          {qrvalue.includes('https://') ||
-          qrvalue.includes('http://') ||
-          qrvalue.includes('geo:') ? (
-            <TouchableHighlight onPress={onOpenlink}>
-              <Text style={styles.textLinkStyle}>
-                {qrvalue.includes('geo:') ? 'Open in Map' : 'Open Link'}
-              </Text>
-            </TouchableHighlight>
-          ) : null}
-          <TouchableHighlight
-            onPress={onOpenScanner()}
-            style={styles.buttonStyle}>
-            <Text style={styles.buttonTextStyle}>Open QR Scanner</Text>
-          </TouchableHighlight>
-        </View>
-      )}
-    </SafeAreaView>
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <TouchableHighlight onPress={() => pressHandler()}>
+        <Text>authenticate with Touch ID</Text>
+      </TouchableHighlight>
+      <TouchableHighlight onPress={() => testHandler()}>
+        <Text>test is supported for biometry</Text>
+      </TouchableHighlight>
+    </View>
   );
-};
+}
 
-export default App;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
-    padding: 10,
-    alignItems: 'center',
-  },
-  titleText: {
-    fontSize: 22,
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
-  textStyle: {
-    color: 'black',
-    fontSize: 16,
-    textAlign: 'center',
-    padding: 10,
-    marginTop: 16,
-  },
-  buttonStyle: {
-    fontSize: 16,
-    color: 'white',
-    backgroundColor: 'green',
-    padding: 5,
-    minWidth: 250,
-  },
-  buttonTextStyle: {
-    padding: 5,
-    color: 'white',
-    textAlign: 'center',
-  },
-  textLinkStyle: {
-    color: 'blue',
-    paddingVertical: 20,
-  },
-});
+const styles = StyleSheet.create({});
