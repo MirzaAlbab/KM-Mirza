@@ -1,7 +1,5 @@
 import React, {useEffect} from 'react';
-
 import {SafeAreaView, StyleSheet, View, Text, Image} from 'react-native';
-
 import messaging from '@react-native-firebase/messaging';
 
 const TOPIC = 'MyNews';
@@ -125,7 +123,9 @@ const CloudMessage = () => {
         </Text>
         <Text style={styles.textStyle}>using</Text>
         <Image
-          source={require('./Image/firebase.png')}
+          source={{
+            uri: 'https://www.gstatic.com/devrel-devsite/prod/vcf74735f7c06cd017eb0bfd91ed83c965bdd5f0cbef3dc678f0e1f5f31be7e67/firebase/images/touchicon-180.png',
+          }}
           style={{
             width: '90%',
             height: '50%',
