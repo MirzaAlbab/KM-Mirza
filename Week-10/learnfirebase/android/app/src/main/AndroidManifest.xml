@@ -17,7 +17,7 @@
       android:theme="@style/AppTheme">
       <meta-data
      android:name="com.google.android.geo.API_KEY"
-     android:value="AIzaSyDQv0DHaDY19QqeVTRMw1XLawrv8S1Y8lM"/>
+     android:value="${API_KEY}"/>
       <activity
         android:name=".MainActivity"
         android:label="@string/app_name"
@@ -26,9 +26,7 @@
         android:windowSoftInputMode="adjustResize"
         android:exported="true">
         
-        <!-- <meta-data
-          android:name="com.google.android.geo.API_KEY"
-          android:value="AIzaSyDQv0DHaDY19QqeVTRMw1XLawrv8S1Y8lM" /> -->
+        
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />

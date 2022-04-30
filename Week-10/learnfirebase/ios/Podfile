@@ -21,6 +21,8 @@ target 'learnfirebase' do
 
   pod 'TouchID', :path => '../node_modules/react-native-touch-id'
 
+  pod 'react-native-maps', :path => '../node_modules/react-native-maps'
+
   target 'learnfirebaseTests' do
     inherit! :complete
     # Pods for testing
