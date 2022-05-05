@@ -23,6 +23,8 @@ target 'learnfirebase' do
 
   pod 'react-native-maps', :path => '../node_modules/react-native-maps'
 
+  pod 'react-native-config', :path => '../node_modules/react-native-config'
+
   target 'learnfirebaseTests' do
     inherit! :complete
     # Pods for testing
