@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "226393507835",
-    "project_id": "learn-firebase-5752b",
-    "storage_bucket": "learn-firebase-5752b.appspot.com"
+    "project_number": "355515431260",
+    "project_id": "fir-e33b3",
+    "storage_bucket": "fir-e33b3.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:226393507835:android:4660992be469c1771f2d5e",
+        "mobilesdk_app_id": "1:355515431260:android:11f28b919df4b91f62a999",
         "android_client_info": {
           "package_name": "com.learnfirebase"
         }
       },
       "oauth_client": [
         {
-          "client_id": "226393507835-1pvf2q55ct3a4n5sa0j755flhidfst3g.apps.googleusercontent.com",
+          "client_id": "355515431260-roilocfm29jktv4ic6jh5nur3n0fjvnt.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCYA2utakZ7LGbr4lfQk2vTZZqc6m-O1P0"
+          "current_key": "AIzaSyDpebf6HN7RrqymXYFhQl67MHkbmtQzKzw"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "226393507835-1pvf2q55ct3a4n5sa0j755flhidfst3g.apps.googleusercontent.com",
+              "client_id": "355515431260-roilocfm29jktv4ic6jh5nur3n0fjvnt.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+import org.devio.rn.splashscreen.SplashScreenReactPackage;
+import com.oblador.vectoricons.VectorIconsPackage;
 import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
 import com.airbnb.android.react.maps.MapsPackage;
 import com.rnfingerprint.FingerprintAuthPackage;

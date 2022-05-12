@@ -1,8 +1,53 @@
-import React from 'react';
-import {SafeAreaView, StyleSheet, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  SafeAreaView,
+  StyleSheet,
+  View,
+  PermissionsAndroid,
+  Text,
+} from 'react-native';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
+import Geolocation from 'react-native-geolocation-service';
 
 const Maps = () => {
+  const [currentLocation, setCurrentLocation] = useState({});
+  const requestLocationPermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          title: 'Firebase App Location Permission',
+          message: 'Firebase App needs access to your location ',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK',
+        },
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        Geolocation.getCurrentPosition(
+          position => {
+            setCurrentLocation({
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            });
+          },
+          error => {
+            // See error code charts below.
+            console.log(error.code, error.message);
+          },
+          {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+        );
+      } else {
+        console.log('location permission denied');
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  };
+
+  useEffect(() => {
+    requestLocationPermission();
+  }, []);
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
@@ -10,8 +55,8 @@ const Maps = () => {
           style={styles.mapStyle}
           provider={PROVIDER_GOOGLE}
           initialRegion={{
-            latitude: 37.78825,
-            longitude: -122.4324,
+            latitude: currentLocation.latitude ?? 37.78825,
+            longitude: currentLocation.longitude ?? -122.4324,
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
           }}
@@ -20,14 +65,20 @@ const Maps = () => {
           <Marker
             draggable
             coordinate={{
-              latitude: 37.78825,
-              longitude: -122.4324,
+              latitude: currentLocation.latitude ?? 37.78825,
+              longitude: currentLocation.longitude ?? -122.4324,
             }}
             onDragEnd={e => alert(JSON.stringify(e.nativeEvent.coordinate))}
             title={'Test Marker'}
             description={'This is a description of the marker'}
           />
         </MapView>
+        <Text>{JSON.stringify(currentLocation)}</Text>
+
+        {/* <Button
+          title="request permissions"
+          onPress={requestLocationPermission}
+        /> */}
       </View>
     </SafeAreaView>
   );
@@ -127,6 +178,9 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   mapStyle: {
+    width: 720,
+    height: 1080,
+    flex: 1,
     position: 'absolute',
     top: 0,
     left: 0,

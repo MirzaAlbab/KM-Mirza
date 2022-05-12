@@ -1,18 +1,20 @@
-import {StyleSheet, Text, View} from 'react-native';
-import React from 'react';
-import CloudMessage from './src/components/CloudMessage';
-import Maps from './src/components/Maps';
+import React, {useEffect} from 'react';
+import MainRoute from './src/routes/MainRoute';
+import SplashScreen from 'react-native-splash-screen';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {NavigationContainer} from '@react-navigation/native';
+GoogleSignin.configure({
+  webClientId:
+    '355515431260-roilocfm29jktv4ic6jh5nur3n0fjvnt.apps.googleusercontent.com',
+});
+
 export default function App() {
+  useEffect(() => {
+    SplashScreen.hide();
+  }, []);
   return (
-    <View style={styles.container}>
-      {/* <CloudMessage /> */}
-      <Maps />
-    </View>
+    <NavigationContainer>
+      <MainRoute />
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
