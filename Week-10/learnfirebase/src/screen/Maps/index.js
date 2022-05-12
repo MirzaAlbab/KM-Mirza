@@ -6,11 +6,12 @@ import {
   PermissionsAndroid,
   Text,
 } from 'react-native';
-import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
+import MapView, {Callout, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
 
 const Maps = () => {
   const [currentLocation, setCurrentLocation] = useState({});
+  const [name, setName] = useState('');
   const requestLocationPermission = async () => {
     try {
       const granted = await PermissionsAndroid.request(
@@ -61,15 +62,34 @@ const Maps = () => {
             longitudeDelta: 0.0421,
           }}
           showsUserLocation={true}
-          customMapStyle={mapStyle}>
+          customMapStyle={mapStyle}
+          moveOnMarkerPress
+          onPress={e =>
+            setCurrentLocation({
+              latitude: e.nativeEvent.coordinate.latitude,
+              longitude: e.nativeEvent.coordinate.longitude,
+            })
+          }
+          onPoiClick={e => {
+            setName(e.nativeEvent.name);
+            setCurrentLocation({
+              latitude: e.nativeEvent.coordinate.latitude,
+              longitude: e.nativeEvent.coordinate.longitude,
+            });
+          }}>
           <Marker
             draggable
             coordinate={{
               latitude: currentLocation.latitude ?? 37.78825,
               longitude: currentLocation.longitude ?? -122.4324,
             }}
-            onDragEnd={e => alert(JSON.stringify(e.nativeEvent.coordinate))}
-            title={'Test Marker'}
+            onDragEnd={e => {
+              setCurrentLocation({
+                latitude: e.nativeEvent.coordinate.latitude,
+                longitude: e.nativeEvent.coordinate.longitude,
+              });
+            }}
+            title={name}
             description={'This is a description of the marker'}
           />
         </MapView>

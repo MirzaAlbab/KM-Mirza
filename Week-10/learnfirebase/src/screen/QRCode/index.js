@@ -74,9 +74,11 @@ const QRCode = () => {
             style={styles.buttonStyle}>
             <Text style={styles.buttonTextStyle}>Open QR Scanner</Text>
           </TouchableOpacity>
-          <Text style={{marginTop: 16, color: 'white', marginBottom: -16}}>
-            Scanned Result:{' '}
-          </Text>
+          {qrvalue ? (
+            <Text style={{marginTop: 16, color: 'white', marginBottom: -16}}>
+              Scanned Result:{' '}
+            </Text>
+          ) : null}
           <Text style={styles.textStyle}>{qrvalue ? qrvalue : ''}</Text>
           {qrvalue.includes('https://') ||
           qrvalue.includes('http://') ||

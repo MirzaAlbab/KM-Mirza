@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,10 +8,14 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import SocialAuth from '../../components/SocialAuth';
-import auth from '@react-native-firebase/auth';
+import {useDispatch, useSelector} from 'react-redux';
+import {SignInAuth} from './reducer/action';
 export default function Login({navigation}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const {loading} = useSelector(state => state.global);
+  const {User} = useSelector(state => state.login);
+  const dispatch = useDispatch();
 
   const handleEmailChange = text => {
     setEmail(text);
@@ -25,17 +29,15 @@ export default function Login({navigation}) {
     if (email === '' || password === '') {
       Alert.alert('Please fill in all fields');
     } else {
-      auth()
-        .signInWithEmailAndPassword(email, password)
-        .then(() => {
-          alert('Login successfully');
-          navigation.navigate('Main');
-        })
-        .catch(() => {
-          Alert.alert('Invalid credentials');
-        });
+      dispatch(SignInAuth(email, password));
     }
   };
+  useEffect(() => {
+    if (User) {
+      navigation.navigate('Main');
+    }
+  }, [User, loading]);
+
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
@@ -48,6 +50,7 @@ export default function Login({navigation}) {
           Log in
         </Text>
       </View>
+
       <View style={styles.form}>
         <TextInput
           style={styles.email}
@@ -75,11 +78,16 @@ export default function Login({navigation}) {
         <TouchableOpacity style={styles.forgotContainer}>
           <Text style={styles.forgot}>Forgot Password?</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={handleSignInClick}>
-          <Text style={{fontFamily: 'QuicksandBold', fontSize: 20}}>
-            Log In
-          </Text>
-        </TouchableOpacity>
+        {loading ? (
+          <ActivityIndicator size="large" color="#0000ff" />
+        ) : (
+          <TouchableOpacity style={styles.button} onPress={handleSignInClick}>
+            <Text style={{fontFamily: 'QuicksandBold', fontSize: 20}}>
+              Log In
+            </Text>
+          </TouchableOpacity>
+        )}
+
         <Text
           style={{
             paddingTop: 40,

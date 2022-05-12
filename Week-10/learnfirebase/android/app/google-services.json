@@ -1,33 +1,41 @@
 {
   "project_info": {
-    "project_number": "355515431260",
-    "project_id": "fir-e33b3",
-    "storage_bucket": "fir-e33b3.appspot.com"
+    "project_number": "893578154504",
+    "project_id": "challenge-rn-131bc",
+    "storage_bucket": "challenge-rn-131bc.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:355515431260:android:11f28b919df4b91f62a999",
+        "mobilesdk_app_id": "1:893578154504:android:517545b9237739b5cdf7bd",
         "android_client_info": {
           "package_name": "com.learnfirebase"
         }
       },
       "oauth_client": [
         {
-          "client_id": "355515431260-roilocfm29jktv4ic6jh5nur3n0fjvnt.apps.googleusercontent.com",
+          "client_id": "893578154504-aa45ht6t4lgko5im5bv0rklacffp9ln3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.learnfirebase",
+            "certificate_hash": "060b5e494b851cf0e4eb23e2db3abdc9195cdb13"
+          }
+        },
+        {
+          "client_id": "893578154504-8gjpkl6qecjjbimagfsca9eota69o7a6.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDpebf6HN7RrqymXYFhQl67MHkbmtQzKzw"
+          "current_key": "AIzaSyD4dpnBDgTBsBMLcNmg-WIjh4fcWesIKxw"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "355515431260-roilocfm29jktv4ic6jh5nur3n0fjvnt.apps.googleusercontent.com",
+              "client_id": "893578154504-8gjpkl6qecjjbimagfsca9eota69o7a6.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -1,11 +1,13 @@
 import React, {useEffect} from 'react';
-import MainRoute from './src/routes/MainRoute';
+import Root from './src/routes/Root';
+import {Provider} from 'react-redux';
+import {persistedStore, store} from './src/store';
 import SplashScreen from 'react-native-splash-screen';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import {NavigationContainer} from '@react-navigation/native';
+import {PersistGate} from 'redux-persist/integration/react';
 GoogleSignin.configure({
   webClientId:
-    '355515431260-roilocfm29jktv4ic6jh5nur3n0fjvnt.apps.googleusercontent.com',
+    '893578154504-8gjpkl6qecjjbimagfsca9eota69o7a6.apps.googleusercontent.com',
 });
 
 export default function App() {
@@ -13,8 +15,10 @@ export default function App() {
     SplashScreen.hide();
   }, []);
   return (
-    <NavigationContainer>
-      <MainRoute />
-    </NavigationContainer>
+    <Provider store={store}>
+      <PersistGate persistor={persistedStore}>
+        <Root />
+      </PersistGate>
+    </Provider>
   );
 }
