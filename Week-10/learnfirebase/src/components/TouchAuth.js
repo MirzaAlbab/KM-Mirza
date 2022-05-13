@@ -1,8 +1,9 @@
-import {StyleSheet, Text, View, TouchableHighlight, Alert} from 'react-native';
-import React from 'react';
+import {StyleSheet, Text, View, TouchableOpacity, Alert} from 'react-native';
+import React, {useEffect} from 'react';
 import TouchID from 'react-native-touch-id';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-export default function TouchAuth() {
+export default function TouchAuth({navigation}) {
   const optionalConfigObject = {
     title: 'Authentication Required', // Android
     imageColor: '#e00606', // Android
@@ -34,25 +35,32 @@ export default function TouchAuth() {
 
   const pressHandler = () => {
     TouchID.authenticate(
-      'to demo this react-native component',
+      'Scan your fingerprint to get access',
       optionalConfigObject,
     )
       .then(success => {
-        Alert.alert('Authenticated Successfully');
+        // Success code
+        navigation.navigate('Main');
       })
       .catch(error => {
-        Alert.alert('Authentication Failed');
+        // Failure code
       });
   };
 
   return (
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <TouchableHighlight onPress={() => pressHandler()}>
-        <Text>authenticate with Touch ID</Text>
-      </TouchableHighlight>
-      <TouchableHighlight onPress={() => testHandler()}>
-        <Text>test is supported for biometry</Text>
-      </TouchableHighlight>
+    <View>
+      <TouchableOpacity
+        onPress={() => {
+          pressHandler();
+        }}
+        style={{
+          marginTop: 50,
+          backgroundColor: '#FFB600',
+          width: 50,
+          borderRadius: 10,
+        }}>
+        <MaterialIcons name="fingerprint" size={50} color="#fff" />
+      </TouchableOpacity>
     </View>
   );
 }

@@ -279,6 +279,7 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:29.3.1')
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
     implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation project(':react-native-splash-screen')
     implementation 'com.google.firebase:firebase-auth'
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
 

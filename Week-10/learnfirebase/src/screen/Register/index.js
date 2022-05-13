@@ -35,7 +35,6 @@ const Register = ({navigation}) => {
       auth()
         .createUserWithEmailAndPassword(email, password)
         .then(() => {
-          Alert.alert('User created successfully');
           navigation.navigate('Login');
         })
         .catch(error => {
@@ -83,7 +82,8 @@ const Register = ({navigation}) => {
         </View>
 
         <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-          <Text style={{fontFamily: 'QuicksandBold', fontSize: 20}}>
+          <Text
+            style={{fontFamily: 'QuicksandBold', fontSize: 20, color: 'black'}}>
             SIGN UP
           </Text>
         </TouchableOpacity>
@@ -93,7 +93,8 @@ const Register = ({navigation}) => {
             justifyContent: 'center',
             top: '50%',
             height: 30,
-          }}>
+          }}
+          onPress={() => navigation.navigate('Login')}>
           <Text
             style={{
               alignItems: 'center',
@@ -119,7 +120,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: '100%',
     height: '100%',
-    backgroundColor: '#0C0C1C',
+    backgroundColor: '#2B368E',
   },
   headerContainer: {
     flexDirection: 'row',
@@ -138,7 +139,7 @@ const styles = StyleSheet.create({
   email: {
     width: '100%',
     height: 60,
-    backgroundColor: '#0ff1',
+    backgroundColor: '#0E0E52',
     borderRadius: 5,
     marginBottom: 35,
     padding: 10,
@@ -147,7 +148,7 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   password: {
-    width: '85%',
+    width: '100%',
     height: 60,
     borderRadius: 5,
     marginBottom: 35,
@@ -161,20 +162,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     height: 60,
-    backgroundColor: '#0ff1',
+    backgroundColor: '#0E0E52',
     borderRadius: 5,
     marginBottom: 35,
-  },
-  eyeContainer: {
-    position: 'absolute',
-    right: 10,
-    top: 20,
   },
 
   button: {
     width: '100%',
     height: 50,
-    backgroundColor: '#1da',
+    backgroundColor: '#FFB600',
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',

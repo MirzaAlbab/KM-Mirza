@@ -6,10 +6,13 @@ import {
   View,
   Alert,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import SocialAuth from '../../components/SocialAuth';
 import {useDispatch, useSelector} from 'react-redux';
 import {SignInAuth} from './reducer/action';
+import TouchAuth from '../../components/TouchAuth';
+import {pressHandler} from '../../components/Fingerprint';
 export default function Login({navigation}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -34,9 +37,9 @@ export default function Login({navigation}) {
   };
   useEffect(() => {
     if (User) {
-      navigation.navigate('Main');
+      pressHandler();
     }
-  }, [User, loading]);
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -61,20 +64,19 @@ export default function Login({navigation}) {
           placeholderTextColor="grey"
           returnKeyType="next"
         />
-        <View style={styles.passwordContainer}>
-          <TextInput
-            style={styles.password}
-            defaultValue={password}
-            onChangeText={handlePasswordChange}
-            placeholder="Enter Password"
-            placeholderTextColor="grey"
-            returnKeyType="go"
-            secureTextEntry
-            textContentType="password"
-            keyboardType="default"
-            autoCorrect={false}
-          />
-        </View>
+
+        <TextInput
+          style={styles.password}
+          defaultValue={password}
+          onChangeText={handlePasswordChange}
+          placeholder="Enter Password"
+          placeholderTextColor="grey"
+          returnKeyType="go"
+          secureTextEntry
+          textContentType="password"
+          keyboardType="default"
+          autoCorrect={false}
+        />
         <TouchableOpacity style={styles.forgotContainer}>
           <Text style={styles.forgot}>Forgot Password?</Text>
         </TouchableOpacity>
@@ -82,11 +84,18 @@ export default function Login({navigation}) {
           <ActivityIndicator size="large" color="#0000ff" />
         ) : (
           <TouchableOpacity style={styles.button} onPress={handleSignInClick}>
-            <Text style={{fontFamily: 'QuicksandBold', fontSize: 20}}>
+            <Text
+              style={{
+                fontFamily: 'QuicksandBold',
+                fontSize: 20,
+                color: 'black',
+              }}>
               Log In
             </Text>
           </TouchableOpacity>
         )}
+
+        {User ? <TouchAuth navigation={navigation} /> : null}
 
         <Text
           style={{
@@ -99,12 +108,12 @@ export default function Login({navigation}) {
           }}>
           or Log in with
         </Text>
-        <SocialAuth />
+        <SocialAuth navigation={navigation} />
         <TouchableOpacity
           style={{
             alignItems: 'center',
             justifyContent: 'center',
-
+            marginTop: 16,
             height: 30,
           }}
           onPress={() => navigation.navigate('Register')}>
@@ -131,7 +140,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: '100%',
     height: '100%',
-    backgroundColor: '#0C0C1C',
+    backgroundColor: '#2B368E',
   },
   headerContainer: {
     flexDirection: 'row',
@@ -150,8 +159,8 @@ const styles = StyleSheet.create({
   email: {
     width: '100%',
     height: 60,
-    backgroundColor: '#0ff1',
-    borderRadius: 5,
+    backgroundColor: '#0E0E52',
+    borderRadius: 10,
     marginBottom: 35,
     padding: 10,
     fontSize: 18,
@@ -159,10 +168,11 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   password: {
-    width: '85%',
+    width: '100%',
     height: 60,
-    borderRadius: 5,
+    borderRadius: 10,
     marginBottom: 35,
+    backgroundColor: '#0E0E52',
     padding: 10,
     fontSize: 18,
     fontFamily: 'QuicksandBold',
@@ -177,16 +187,11 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginBottom: 35,
   },
-  eyeContainer: {
-    position: 'absolute',
-    right: 10,
-    top: 20,
-  },
 
   button: {
     width: '100%',
     height: 50,
-    backgroundColor: '#1da',
+    backgroundColor: '#FFB600',
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',

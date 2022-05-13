@@ -99,7 +99,7 @@ export default QRCode;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0C0C1C',
+    backgroundColor: '#2B368E',
     padding: 10,
     alignItems: 'center',
     justifyContent: 'center',

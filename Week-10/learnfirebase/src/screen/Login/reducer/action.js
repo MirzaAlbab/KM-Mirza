@@ -6,14 +6,15 @@ export const SignInAuth = (email, password) => async dispatch => {
   dispatch(setLoading(true));
   auth()
     .signInWithEmailAndPassword(email, password)
-    .then(() => {
-      dispatch(setUser(email));
+    .then(e => {
+      dispatch(setUser(e));
+      dispatch(setLoading(false));
       navigate('Main');
     })
     .catch(() => {
+      dispatch(setLoading(false));
       Alert.alert('Invalid credentials');
     });
-  dispatch(setLoading(false));
 };
 
 export const setUser = payload => {

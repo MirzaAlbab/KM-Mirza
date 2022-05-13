@@ -5,22 +5,43 @@ import {
   Image,
   TouchableOpacity,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import auth from '@react-native-firebase/auth';
 import crashlytics from '@react-native-firebase/crashlytics';
 import analytics from '@react-native-firebase/analytics';
 import {useDispatch, useSelector} from 'react-redux';
 import {setUser} from '../Login/reducer/action';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import CloudMessage from '../../components/CloudMessage';
 export default function Home({navigation}) {
   const dispatch = useDispatch();
+  const {User} = useSelector(state => state.login);
   const {loading} = useSelector(state => state.global);
+  const [image, setImage] = useState(
+    'https://bootdey.com/img/Content/avatar/avatar1.png',
+  );
   const logCustomEvent = () => {
     analytics().logEvent('my_custom_event', {
       id: 101,
       item: 'My Product Name',
       description: ['My Product Desc 1', 'My Product Desc 2'],
     });
+  };
+
+  const signOutGoogle = async () => {
+    // await GoogleSignin.signOut().then(() => {
+    //   navigation.navigate('Login');
+    //   dispatch(setUser({}));
+    // });
+    try {
+      await GoogleSignin.signOut();
+      dispatch(setUser(null));
+      navigation.navigate('Login'); // Remember to remove the user from your app's state as well
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const signOut = () => {
@@ -36,18 +57,30 @@ export default function Home({navigation}) {
         {
           text: 'OK',
           onPress: () => {
-            auth()
-              .signOut()
-              .then(() => {
-                dispatch(setUser(null));
-                navigation.navigate('Login');
-              });
+            if (!User.idToken) {
+              auth()
+                .signOut()
+                .then(() => {
+                  navigation.navigate('Login');
+                  dispatch(setUser(null));
+                });
+            }
+            if (User.idToken) {
+              signOutGoogle();
+            }
           },
         },
       ],
       {cancelable: false},
     );
   };
+  useEffect(() => {
+    if (User) {
+      setImage(
+        User.user.photo ?? 'https://bootdey.com/img/Content/avatar/avatar1.png',
+      );
+    }
+  });
   if (loading) {
     <View style={styles.container}>
       <ActivityIndicator size="large" color="#0000ff" />
@@ -55,6 +88,21 @@ export default function Home({navigation}) {
   } else {
     return (
       <View style={styles.container}>
+        <View style={styles.header}>
+          <View style={styles.headerContent}>
+            <Image
+              style={styles.avatar}
+              source={{
+                uri: image,
+              }}
+            />
+            {User ? (
+              <Text style={styles.name}>
+                {User.user.givenName ?? User.user.email}
+              </Text>
+            ) : null}
+          </View>
+        </View>
         <View style={styles.menuBox}>
           <TouchableOpacity onPress={() => navigation.navigate('Maps')}>
             <Image
@@ -120,6 +168,7 @@ export default function Home({navigation}) {
             <Text style={styles.info}>Sign Out</Text>
           </TouchableOpacity>
         </View>
+        {/* <CloudMessage /> */}
       </View>
     );
   }
@@ -133,7 +182,29 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#0C0C1C',
+    backgroundColor: '#2B368E',
+  },
+  header: {
+    backgroundColor: '#2B368E',
+    width: '100%',
+    borderRadius: 5,
+  },
+  headerContent: {
+    padding: 30,
+    alignItems: 'center',
+  },
+  avatar: {
+    width: 130,
+    height: 130,
+    borderRadius: 63,
+    borderWidth: 4,
+    borderColor: 'white',
+    marginBottom: 10,
+  },
+  name: {
+    fontSize: 22,
+    color: '#FFFFFF',
+    fontWeight: '600',
   },
   menuBox: {
     backgroundColor: '#fff',

@@ -21,10 +21,12 @@ import {
   GoogleSigninButton,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
+import {setUser} from '../screen/Login/reducer/action';
+import {useDispatch, useSelector} from 'react-redux';
+const SocialAuth = ({navigation}) => {
+  const {loading} = useSelector(state => state.global);
 
-const SocialAuth = () => {
-  const [userInfo, setUserInfo] = useState(null);
-  const [gettingLoginStatus, setGettingLoginStatus] = useState(true);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     // _isSignedIn();
@@ -67,8 +69,8 @@ const SocialAuth = () => {
         showPlayServicesUpdateDialog: true,
       });
       const userInfo = await GoogleSignin.signIn();
-      console.log('User Info --> ', userInfo);
-      setUserInfo(userInfo);
+      dispatch(setUser(userInfo));
+      navigation.navigate('Main');
     } catch (error) {
       console.log('Message', JSON.stringify(error));
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
